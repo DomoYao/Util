@@ -2,13 +2,6 @@
 const webpack = require('webpack');
 var Extract = require("extract-text-webpack-plugin");
 
-//支持老浏览器的补丁
-const polyfillModules = [
-    'es6-shim',
-    'es6-promise',
-    'event-source-polyfill'
-];
-
 //第三方Js库
 const jsModules = [
     'reflect-metadata',
@@ -20,6 +13,7 @@ const jsModules = [
     '@angular/compiler',
     '@angular/core',
     '@angular/forms',
+    '@angular/elements',
     '@angular/platform-browser',
     '@angular/platform-browser/animations',
     '@angular/platform-browser-dynamic',
@@ -36,13 +30,16 @@ const jsModules = [
 const cssModules = [
     '@angular/material/prebuilt-themes/indigo-pink.css',
     'material-design-icons/iconfont/material-icons.css',
-    'font-awesome/css/font-awesome.css'
+    'font-awesome/css/font-awesome.css',
+    'primeicons/primeicons.css',
+    'primeng/resources/themes/omega/theme.css',
+    'primeng/resources/primeng.min.css'
 ];
 
-//env代表环境变量，如果传入env.production表示正式生产环境
 module.exports = (env) => {
     //是否开发环境
     const isDev = !(env && env.prod);
+    const mode = isDev ? "development" : "production";
 
     //将css提取到单独文件中
     const extractCss = new Extract("vendor.css");
@@ -52,29 +49,9 @@ module.exports = (env) => {
         return pathPlugin.join(__dirname, path);
     }
 
-    //打包补丁
-    let polyfills = {
-        entry: { polyfills: polyfillModules },
-        output: {
-            publicPath: 'dist/',
-            path: getPath("wwwroot/dist"),
-            filename: "[name].js",
-            library: '[name]'
-        },
-        resolve: {
-            extensions: ['.js']
-        },
-        devtool: "source-map",
-        plugins: [
-            new webpack.DllPlugin({
-                path: getPath("wwwroot/dist/[name]-manifest.json"),
-                name: "[name]"
-            })
-        ].concat(isDev ? [] : [new webpack.optimize.UglifyJsPlugin()])
-    }
-
     //打包第三方Js库
     let vendorJs = {
+        mode: mode,
         entry: { vendor: jsModules },
         output: {
             publicPath: 'dist/',
@@ -99,6 +76,7 @@ module.exports = (env) => {
 
     //打包css
     let vendorCss = {
+        mode: mode,
         entry: { vendor: cssModules },
         output: {
             publicPath: './',
@@ -125,5 +103,5 @@ module.exports = (env) => {
             extractCss
         ]
     }
-    return isDev ? [polyfills, vendorJs, vendorCss] : [vendorCss];
+    return isDev ? [ vendorJs, vendorCss] : [vendorCss];
 }

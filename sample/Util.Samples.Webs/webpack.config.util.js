@@ -1,10 +1,10 @@
 ﻿const pathPlugin = require('path');
 const webpack = require('webpack');
 
-//env代表环境变量，如果传入env.production表示正式生产环境
 module.exports = (env) => {
     //是否开发环境
     const isDev = !(env && env.prod);
+    const mode = isDev ? "development" : "production";
 
     //获取路径
     function getPath(path) {
@@ -13,6 +13,7 @@ module.exports = (env) => {
 
     //打包util脚本库
     return {
+        mode: mode,
         entry: { util: [getPath("Typings/util/index.ts")] },
         output: {
             publicPath: 'dist/',
@@ -36,10 +37,7 @@ module.exports = (env) => {
             new webpack.DllPlugin({
                 path: getPath("wwwroot/dist/[name]-manifest.json"),
                 name: "[name]"
-            }),
-            new webpack.optimize.ModuleConcatenationPlugin()
-        ].concat(isDev ? [] : [
-            new webpack.optimize.UglifyJsPlugin()
-        ])
+            })
+        ]
     }
 }

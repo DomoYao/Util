@@ -3,6 +3,9 @@ using Util.Biz.Payments.Alipay.Abstractions;
 using Util.Biz.Payments.Alipay.Configs;
 using Util.Biz.Payments.Alipay.Services;
 using Util.Biz.Payments.Core;
+using Util.Biz.Payments.Wechatpay.Abstractions;
+using Util.Biz.Payments.Wechatpay.Configs;
+using Util.Biz.Payments.Wechatpay.Services;
 
 namespace Util.Biz.Payments.Factories {
     /// <summary>
@@ -13,14 +16,19 @@ namespace Util.Biz.Payments.Factories {
         /// 支付宝配置提供器
         /// </summary>
         private readonly IAlipayConfigProvider _alipayConfigProvider;
+        /// <summary>
+        /// 微信支付配置提供器
+        /// </summary>
+        private readonly IWechatpayConfigProvider _wechatpayConfigProvider;
 
         /// <summary>
         /// 初始化支付工厂
         /// </summary>
         /// <param name="alipayConfigProvider">支付宝配置提供器</param>
-        public PayFactory( IAlipayConfigProvider alipayConfigProvider ) {
-            alipayConfigProvider.CheckNull( nameof( alipayConfigProvider ) );
+        /// <param name="wechatpayConfigProvider">微信支付配置提供器</param>
+        public PayFactory( IAlipayConfigProvider alipayConfigProvider, IWechatpayConfigProvider wechatpayConfigProvider ) {
             _alipayConfigProvider = alipayConfigProvider;
+            _wechatpayConfigProvider = wechatpayConfigProvider;
         }
 
         /// <summary>
@@ -35,8 +43,12 @@ namespace Util.Biz.Payments.Factories {
                     return new AlipayPagePayService( _alipayConfigProvider );
                 case PayWay.AlipayWapPay:
                     return new AlipayWapPayService( _alipayConfigProvider );
+                case PayWay.AlipayAppPay:
+                    return new AlipayAppPayService( _alipayConfigProvider );
+                case PayWay.WechatpayAppPay:
+                    return new WechatpayAppPayService( _wechatpayConfigProvider );
             }
-            throw new NotImplementedException();
+            throw new NotImplementedException( way.Description() );
         }
 
         /// <summary>
@@ -72,6 +84,27 @@ namespace Util.Biz.Payments.Factories {
         /// </summary>
         public IAlipayWapPayService CreateAlipayWapPayService() {
             return new AlipayWapPayService( _alipayConfigProvider );
+        }
+
+        /// <summary>
+        /// 创建支付宝App支付服务
+        /// </summary>
+        public IAlipayAppPayService CreateAlipayAppPayService() {
+            return new AlipayAppPayService( _alipayConfigProvider );
+        }
+
+        /// <summary>
+        /// 创建微信回调通知服务
+        /// </summary>
+        public IWechatpayNotifyService CreateWechatpayNotifyService() {
+            return new WechatpayNotifyService( _wechatpayConfigProvider );
+        }
+
+        /// <summary>
+        /// 创建微信App支付服务
+        /// </summary>
+        public IWechatpayAppPayService CreateWechatpayAppPayService() {
+            return new WechatpayAppPayService( _wechatpayConfigProvider );
         }
     }
 }

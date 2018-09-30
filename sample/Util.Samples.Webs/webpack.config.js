@@ -2,12 +2,11 @@
 const webpack = require('webpack');
 var Extract = require("extract-text-webpack-plugin");
 const AngularCompilerPlugin = require('@ngtools/webpack').AngularCompilerPlugin;
-const PurifyPlugin = require('@angular-devkit/build-optimizer').PurifyPlugin;
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = (env) => {
     //是否开发环境
     const isDev = !(env && env.prod);
+    const mode = isDev ? "development" : "production";
 
     //将css提取到单独文件中
     const extractCss = new Extract("app.css");
@@ -19,6 +18,7 @@ module.exports = (env) => {
 
     //打包js
     let jsConfig = {
+        mode: mode,
         entry: { app: getPath("Typings/main.ts") },
         output: {
             publicPath: 'dist/',
@@ -52,13 +52,13 @@ module.exports = (env) => {
                 new AngularCompilerPlugin({
                     tsConfigPath: 'tsconfig.json',
                     entryModule: "Typings/app/app.module#AppModule"
-                }),
-                new UglifyJsPlugin()
+                })
             ])
     }
 
     //打包css
     let cssConfig = {
+        mode: mode,
         entry: { app: getPath("wwwroot/css/main.scss") },
         output: {
             publicPath: './',

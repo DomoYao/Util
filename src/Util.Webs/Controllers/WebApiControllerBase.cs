@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Util.Helpers;
 using Util.Properties;
 using Util.Sessions;
 using Util.Webs.Commons;
@@ -10,25 +9,13 @@ namespace Util.Webs.Controllers {
     /// WebApi控制器
     /// </summary>
     [Route( "api/[controller]" )]
-    [ExceptionHandler]
     [ErrorLog]
+    [TraceLog]
     public class WebApiControllerBase : Controller {
         /// <summary>
         /// 会话
         /// </summary>
-        private readonly ISession _session;
-
-        /// <summary>
-        /// 初始化
-        /// </summary>
-        public WebApiControllerBase() {
-            _session = Ioc.Create<ISession>();
-        }
-
-        /// <summary>
-        /// 会话
-        /// </summary>
-        public virtual ISession Session => _session ?? NullSession.Instance;
+        public virtual ISession Session => Security.Sessions.Session.Instance;
 
         /// <summary>
         /// 返回成功消息

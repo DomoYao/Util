@@ -5,7 +5,6 @@ using Util.Ui.Extensions;
 using Util.Ui.Material.Enums;
 using Util.Ui.Material.Tables.Configs;
 using Util.Ui.Material.Tables.Renders;
-using Util.Ui.Material.Tables.Temp;
 using Util.Ui.Renders;
 using Util.Ui.TagHelpers;
 
@@ -63,6 +62,10 @@ namespace Util.Ui.Material.Tables.TagHelpers {
         /// 分页长度列表，值通过逗号分隔，范例：10,20,50,100
         /// </summary>
         public string PageSizeOptions { get; set; }
+        /// <summary>
+        /// 冻结表头，默认为true
+        /// </summary>
+        public bool StickyHeader { get; set; }
 
         /// <summary>
         /// 获取渲染器
@@ -70,8 +73,6 @@ namespace Util.Ui.Material.Tables.TagHelpers {
         /// <param name="context">上下文</param>
         protected override IRender GetRender( Context context ) {
             var config = new TableConfig( context );
-            if( config.Contains( UiConst.MaxHeight ) )
-                return new TempTableRender( config );
             return new TableRender( config );
         }
 

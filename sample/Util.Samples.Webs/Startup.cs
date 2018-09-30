@@ -3,6 +3,7 @@ using System.IO;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.Webpack;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
@@ -10,8 +11,8 @@ using Util.Datas.Ef;
 using Util.Events.Default;
 using Util.Logs.Extensions;
 using Util.Samples.Webs.Datas;
-using Util.Samples.Webs.Datas.SqlServer;
 using Util.Webs.Extensions;
+using Util.Webs.Filters;
 
 namespace Util.Samples.Webs {
     /// <summary>
@@ -38,6 +39,7 @@ namespace Util.Samples.Webs {
             //添加Mvc服务
             services.AddMvc( options => {
                     //options.Filters.Add( new AutoValidateAntiforgeryTokenAttribute() );
+                    options.Filters.Add( new ExceptionHandlerAttribute() );
                 }
             ).AddControllersAsServices();
 
@@ -51,7 +53,14 @@ namespace Util.Samples.Webs {
             services.AddXsrfToken();
 
             //添加工作单元
-            services.AddUnitOfWork<ISampleUnitOfWork, SampleUnitOfWork>( Configuration.GetConnectionString( "DefaultConnection" ) );
+            //====== 支持Sql Server 2012+ ==========
+            services.AddUnitOfWork<ISampleUnitOfWork, Util.Samples.Webs.Datas.SqlServer.SampleUnitOfWork>( Configuration.GetConnectionString( "DefaultConnection" ) );
+            //======= 支持Sql Server 2005+ ==========
+            //services.AddUnitOfWork<ISampleUnitOfWork, Util.Samples.Webs.Datas.SqlServer.SampleUnitOfWork>( builder => {
+            //    builder.UseSqlServer( Configuration.GetConnectionString( "DefaultConnection" ), option => option.UseRowNumberForPaging() );
+            //} );
+            //======= 支持PgSql =======
+            //services.AddUnitOfWork<ISampleUnitOfWork, Util.Samples.Webs.Datas.PgSql.SampleUnitOfWork>( Configuration.GetConnectionString( "PgSqlConnection" ) );
 
             //添加Swagger
             services.AddSwaggerGen( options => {
@@ -60,6 +69,9 @@ namespace Util.Samples.Webs {
                 options.IncludeXmlComments( Path.Combine( AppContext.BaseDirectory, "Util.Webs.xml" ) );
                 options.IncludeXmlComments( Path.Combine( AppContext.BaseDirectory, "Util.Samples.Webs.xml" ) );
             } );
+
+            // 添加Razor静态Html生成器
+            services.AddRazorHtml();
 
             //添加Util基础设施服务
             return services.AddUtil();

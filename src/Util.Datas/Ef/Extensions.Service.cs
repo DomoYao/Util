@@ -2,8 +2,10 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Util.Datas.Dapper;
 using Util.Datas.Ef.Configs;
 using Util.Datas.Ef.Core;
+using Util.Datas.Enums;
 using Util.Datas.UnitOfWorks;
 
 namespace Util.Datas.Ef {
@@ -22,8 +24,23 @@ namespace Util.Datas.Ef {
             where TService : class, IUnitOfWork
             where TImplementation : UnitOfWorkBase, TService {
             services.AddDbContext<TImplementation>( configAction );
-            services.TryAddScoped<TService, TImplementation>();
+            services.TryAddScoped<TService>( t => t.GetService<TImplementation>() );
+            services.AddSqlQuery<TImplementation, TImplementation>( config => config.DatabaseType = GetDbType<TImplementation>() );
             return services;
+        }
+
+        /// <summary>
+        /// 获取数据库类型
+        /// </summary>
+        private static DatabaseType GetDbType<TUnitOfWork>() {
+            var type = typeof( TUnitOfWork ).BaseType;
+            if ( type == typeof( Util.Datas.Ef.SqlServer.UnitOfWork ) )
+                return DatabaseType.SqlServer;
+            if ( type == typeof( Util.Datas.Ef.MySql.UnitOfWork ) )
+                return DatabaseType.MySql;
+            if ( type == typeof( Util.Datas.Ef.PgSql.UnitOfWork ) )
+                return DatabaseType.PgSql;
+            return DatabaseType.SqlServer;
         }
 
         /// <summary>
@@ -34,7 +51,7 @@ namespace Util.Datas.Ef {
         /// <param name="services">服务集合</param>
         /// <param name="connection">连接字符串</param>
         /// <param name="level">Ef日志级别</param>
-        public static IServiceCollection AddUnitOfWork<TService, TImplementation>( this IServiceCollection services, string connection,EfLogLevel level = EfLogLevel.Sql )
+        public static IServiceCollection AddUnitOfWork<TService, TImplementation>( this IServiceCollection services, string connection, EfLogLevel level = EfLogLevel.Sql )
             where TService : class, IUnitOfWork
             where TImplementation : UnitOfWorkBase, TService {
             EfConfig.LogLevel = level;
@@ -47,18 +64,16 @@ namespace Util.Datas.Ef {
         /// 配置连接字符串
         /// </summary>
         private static void ConfigConnection<TImplementation>( DbContextOptionsBuilder builder, string connection ) where TImplementation : UnitOfWorkBase {
-            var type = typeof( TImplementation ).BaseType;
-            if( type == typeof( Util.Datas.Ef.SqlServer.UnitOfWork ) ) {
-                builder.UseSqlServer( connection );
-                return;
-            }
-            if( type == typeof( Util.Datas.Ef.MySql.UnitOfWork ) ) {
-                builder.UseMySql( connection );
-                return;
-            }
-            if( type == typeof( Util.Datas.Ef.PgSql.UnitOfWork ) ) {
-                builder.UseNpgsql( connection );
-                return;
+            switch ( GetDbType<TImplementation>() ) {
+                case DatabaseType.SqlServer:
+                    builder.UseSqlServer( connection );
+                    return;
+                case DatabaseType.MySql:
+                    builder.UseMySql( connection );
+                    return;
+                case DatabaseType.PgSql:
+                    builder.UseNpgsql( connection );
+                    return;
             }
         }
     }

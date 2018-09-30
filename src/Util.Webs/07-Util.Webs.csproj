@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <Import Project="../../build/version.props" />
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -39,9 +39,9 @@ Util是一个.net core平台下的应用框架，旨在提升小型团队的开�
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.1.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.1.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="2.4.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.1.2" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="3.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -50,7 +50,7 @@ Util是一个.net core平台下的应用框架，旨在提升小型团队的开�
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="WebResource.Designer.cs">
+    <Compile Update="Properties\WebResource.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>WebResource.resx</DependentUpon>
@@ -58,7 +58,7 @@ Util是一个.net core平台下的应用框架，旨在提升小型团队的开�
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="WebResource.resx">
+    <EmbeddedResource Update="Properties\WebResource.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>WebResource.Designer.cs</LastGenOutput>
     </EmbeddedResource>

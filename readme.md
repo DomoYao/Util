@@ -140,11 +140,9 @@ Util应用框架面向的是*架构初学者*，但不是.net初学者。
   - XUnit
   - NSubstitute
 
-8. ORM
-  - EntityFrameworkCore
-  - Microsoft.EntityFrameworkCore.SqlServer
-  - Npgsql.EntityFrameworkCore.PostgreSQL
-  - Pomelo.EntityFrameworkCore.MySql
+8. 数据访问框架
+  - [EntityFrameworkCore](https://docs.microsoft.com/zh-cn/ef/core/)
+  - [Dapper](https://github.com/StackExchange/Dapper)
 
 9. Ioc框架
   - Autofac
@@ -184,7 +182,7 @@ Util应用框架面向的是*架构初学者*，但不是.net初学者。
   - 脚本语言
     - [TypeScript](https://www.tslang.cn)
   - 脚本框架
-    - [Angular 5](https://angular.cn/)
+    - [Angular 6](https://angular.cn/)
   - Css预处理器
     - [Sass](http://www.sass-lang.com) 
   - 组件库
@@ -274,7 +272,7 @@ Util应用框架面向的是*架构初学者*，但不是.net初学者。
 
 ## 核心开发团队
 
-[何镇汐](https://github.com/utilcore) [程序喵](https://github.com/program-meow "胡雲鹏") [Richfiter](https://github.com/xingwen1987 "邢文")
+[何镇汐](https://github.com/utilcore) [程序喵](https://github.com/program-meow "胡雲鹏") [玄冰](https://github.com/jianxuanbing "简楚恩") [Richfiter](https://github.com/xingwen1987 "邢文")
 
 应用框架的开发工作量很大，个人显得力不从心，我也迫切希望找到一些志同道合的同学共同完成，同时也欢迎你的加入。
 
@@ -364,6 +362,7 @@ https://github.com/dotnetcore/util/
 > 包括.net core版本的跳跃式升级等，比如从.net core1.x升级到2.0。
 
 - 2017年7月21日，将.net core升级到2.0 Preview 2。
+- 2018年6月12日，将angular和material升级到6.x。
 
 ## 更新计划
 
@@ -416,6 +415,8 @@ https://github.com/dotnetcore/util/
   - 事件总线 [已发布]
   - Crud控制器基类 [已发布]
   - 树型控制器基类 [已发布]
+  - Sql生成器 [已发布]
+  - Sql查询对象 [已发布]
 - UI组件 - 支持HtmlHelper和TagHelper两种方式
   - 组件基类  [已发布]
   - TagHelper基类  [已发布]
@@ -453,6 +454,9 @@ https://github.com/dotnetcore/util/
   - 支付宝电脑网站支付 [已发布]
   - 支付宝手机网站支付 [已发布]
   - 支付宝回调 [已发布]
+  - 支付宝APP支付 [已发布]
+  - 微信APP支付 [已发布]
+  - 微信支付回调 [已发布]
 
 ## 更新列表
 
@@ -512,3 +516,8 @@ https://github.com/dotnetcore/util/
 - 2018年4月23日，更新了富文本框编辑器组件(Util.Ui.Angular/CkEditor)。
 - 2018年5月22日，更新了支付宝电脑网站支付和手机网站支付操作。
 - 2018年5月24日，更新了支付宝回调操作。
+- 2018年6月19日，更新了支付宝APP支付。
+- 2018年7月15日，更新了微信APP支付。
+- 2018年7月16日，更新了微信支付回调。
+- 2018年8月30日，更新了Sql生成器和SqlQuery查询对象。
+- 2018年9月14日，更新了WebApi跟踪日志过滤器。
