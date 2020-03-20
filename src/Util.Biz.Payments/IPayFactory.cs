@@ -21,9 +21,17 @@ namespace Util.Biz.Payments {
         /// </summary>
         IAlipayReturnService CreateAlipayReturnService();
         /// <summary>
+        /// 创建支付宝交易撤消服务
+        /// </summary>
+        IAlipayCancelService CreateAlipayCancelService();
+        /// <summary>
         /// 创建支付宝条码支付服务
         /// </summary>
         IAlipayBarcodePayService CreateAlipayBarcodePayService();
+        /// <summary>
+        /// 创建支付宝二维码支付服务
+        /// </summary>
+        IAlipayQrCodePayService CreateAlipayQrCodePayService();
         /// <summary>
         /// 创建支付宝电脑网站支付服务
         /// </summary>
@@ -41,8 +49,28 @@ namespace Util.Biz.Payments {
         /// </summary>
         IWechatpayNotifyService CreateWechatpayNotifyService();
         /// <summary>
+        /// 创建微信退款服务
+        /// </summary>
+        IWechatpayRefundService CreateWechatpayRefundService();
+        /// <summary>
+        /// 创建微信关闭订单服务
+        /// </summary>
+        IWechatpayCloseOrderService CreateWechatpayCloseOrderService();
+        /// <summary>
         /// 创建微信App支付服务
         /// </summary>
         IWechatpayAppPayService CreateWechatpayAppPayService();
+        /// <summary>
+        /// 创建微信小程序支付服务
+        /// </summary>
+        IWechatpayMiniProgramPayService CreateWechatpayMiniProgramPayService();
+        /// <summary>
+        /// 创建微信JsApi支付服务
+        /// </summary>
+        IWechatpayJsApiPayService CreateWechatpayJsApiPayService();
+        /// <summary>
+        /// 创建微信扫码支付服务
+        /// </summary>
+        IWechatpayNativePayService CreateWechatpayNativePayService();
     }
 }

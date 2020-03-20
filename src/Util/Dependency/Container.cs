@@ -121,10 +121,15 @@ namespace Util.Dependency {
         public ContainerBuilder CreateBuilder( IServiceCollection services, Action<ContainerBuilder> actionBefore, params IConfig[] configs ) {
             var builder = new ContainerBuilder();
             actionBefore?.Invoke( builder );
-            foreach( var config in configs )
-                builder.RegisterModule( config );
-            if( services != null )
-                builder.Populate( services );
+            if ( configs != null ) {
+                foreach ( var config in configs )
+                    builder.RegisterModule( config );
+            }
+            if ( services == null ) {
+                services = new ServiceCollection();
+                builder.AddSingleton( services );
+            }
+            builder.Populate( services );
             return builder;
         }
 

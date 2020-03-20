@@ -99,5 +99,13 @@
         /// 错误码和描述
         /// </summary>
         public const string ErrorCodeDescription = "err_code_des";
+        /// <summary>
+        /// 附加数据
+        /// </summary>
+        public const string Attach = "attach";
+        /// <summary>
+        /// 用户标识
+        /// </summary>
+        public const string OpenId = "openid";
     }
 }

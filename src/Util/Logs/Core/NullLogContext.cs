@@ -11,6 +11,10 @@ namespace Util.Logs.Core {
         /// </summary>
         public static readonly ILogContext Instance = new NullLogContext();
         /// <summary>
+        /// 日志标识
+        /// </summary>
+        public string LogId => string.Empty;
+        /// <summary>
         /// 跟踪号
         /// </summary>
         public string TraceId => string.Empty;
@@ -34,5 +38,16 @@ namespace Util.Logs.Core {
         /// 请求地址
         /// </summary>
         public string Url => string.Empty;
+        /// <summary>
+        /// 排序
+        /// </summary>
+        public int Order => 0;
+
+        /// <summary>
+        /// 更新上下文
+        /// </summary>
+        public void UpdateContext()
+        {
+        }
     }
 }

@@ -52,7 +52,7 @@
         /// </summary>
         public const string BizContent = "biz_content";
         /// <summary>
-        /// 支付订单号
+        /// 支付交易号
         /// </summary>
         public const string TradeNo = "trade_no";
         /// <summary>
@@ -95,5 +95,17 @@
         /// 回调通知标识
         /// </summary>
         public const string NotifyId = "notify_id";
+        /// <summary>
+        /// 二维码
+        /// </summary>
+        public const string QrCode = "qr_code";
+        /// <summary>
+        /// 重试标识
+        /// </summary>
+        public const string RetryFlag = "retry_flag";
+        /// <summary>
+        /// 操作
+        /// </summary>
+        public const string Action = "action";
     }
 }
